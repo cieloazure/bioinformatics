@@ -1,38 +1,50 @@
 # CAP-5510 Term Project
 
 ## Project Title
-Implementing a method for motif identification in a set of RNA sequence by using the swarm optimization technique and also MIA (Motif Identification Algorithm).
+
+Implementation and Analysis of different Algorithms to find Tandem Repeats in
+DNA sequences.
 
 ## Team members 
 
-- Tushar Kaley
-- Akash Shingte
+- Tushar Kaley (9126-1421)
+- Akash Shingte (4874-1966)
 
 ## Abstract
 
-Extraction of meaningful patterns from huge biological data is termed as motif search. Identification of structural and sequence motifs in genomic sequences is gaining much attention today.  Ribonucleic acid or RNA is one of the important bio molecule whose secondary structure defines its functionality. In this project I aim to Implement two methods for motif identification in a set of RNA sequences and comparing the result in terms of performance and accuracy.
+A tandem repeat in DNA is two or more contiguous, approximate copies of a pattern of nucleotides. Tandem repeats have been shown to cause human disease, may play a variety of regulatory and evolutionary roles and are important laboratory and analytic tools.
 
-1. Implementing the method for motif identification in a set of RNA using swarm optimization technique and comparing it result with other existing methods like GeRNAMO and GPRM etc.
-2. Implementing another novel approach for finding motifs in unaligned structure by using the Fourier transform and the so called motif identification algorithm.
+Extensive knowledge about pattern size, copy number, mutational history, etc. for tandem repeats has been limited by the inability to easily detect them in genomic sequence data. For this purpose, a variety of algorithms exists for finding tandem repeats. 
+
+In this project we propose to implement, analyze and compare different algorithms for finding tandem repeats. Namely, 
+1. Suffix Array Implementation
+2. Suffix Tree Implementation
+3. Dynamic Programming Implementation
 
 ## Plan of action
-
-- Understanding various motif Identification methods.
-- Understanding the swarm optimization algorithm.
-- Implementing both the algorithm.
-- Comparing the results of the algorithm with the existing methods GeRNAMo and GPRM etc.
-- Any biological sequence can be used to perform these analyses.
-- Performance and accuracy analysis of the algorithm with respect to the GeRNMo and GPRM for few biological sequences and system parameters.
-
+1. Read and understand the algorithms papers
+2. Implementation of suffix array algorithm
+3. Implementation of suffix tree algorithm
+4. Implementation of dynamic programming algorithm
+5. Comparison of all algorithms.
 
 ## Distribution of workload
+The workload will be distributed evenly across both team members. A rough
+distribution of workload - 
 
-Workload will be divided equally among the team members
+1. Suffix Tree (Akash)
+2. Suffix Array Implementation (Tushar)
+3. Dynamic Programming (Akash & Tushar)
+4. Comparison (Akash & Tushar)
 
 ## References
 
-- R. M. Chen, M. T. Hou and J. J. P. Tsai, "A Novel Approach for Motif Identification in Unaligned Molecular Sequences," 2009 Ninth IEEE International Conference on Bioinformatics and BioEngineering, Taichung, 2009, pp. 378-381.
-doi: 10.1109/BIBE.2009.43
-- V. Preeja, K. A. Abdul Nazeer and S. S. Vinod Chandra, "Common structural motif identification in genomic sequences," 2012 International Conference on Data Science & Engineering (ICDSE), Cochin, Kerala, 2012, pp. 37-41.
-doi: 10.1109/ICDSE.2012.6282301
-
+1. Simple and Flexible Detection of Contiguous Repeats Using a Suffix Tree  - by Jens Stoye and Dan Gusfield
+2. Space Efficient Linear Time construction of Suffix Arrays - by Pang Ko and Srinivas Aluru
+3. Finding Repeats within Strings - by Dina Sokol, Fredrick Adkins, Zhongyuan Che, Kristin Pfabe
+4. SA-SSR: A Suffix Array-Based Algorithm for Exhaustive and Efficient SSR Discovery in Large Genetic Sequences - by Brandon Pickett, S.M. Karlinsey, C.E. Penrod, Perry G Ridge
+5. http://dimacs.rutgers.edu/Publications/Modules/Module09-2/dimacs09-2.pdf - Dynamic programming based Algorithm
+6. http://www.sciencedirect.com/science/article/pii/S1570866704000498 - Suffix Array based Algorithm
+7. http://www.lirmm.fr/~rivals/ALGOSEQ/DOC/TREvolSurvey.pdf
+8. Benson, Gary. “Tandem repeats finder: a program to analyze DNA sequences.” Nucleic acids research 27 2 (1999): 573-80. [Link](https://www.semanticscholar.org/paper/Tandem-repeats-finder%3A-a-program-to-analyze-DNA-Benson/991a7744b15453096e756a2d8ea0e44ee30738ae)
+9. Olivier Delgrange, Eric Rivals. "STAR: An Algorithm to Search for Tandem Approximate Repeats". Bioinformatics, Oxford University Press (OUP), 2004, 20 (16), pp.2812-2820 [Link](http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.860.1856&rep=rep1&type=pdf)
