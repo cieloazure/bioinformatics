@@ -1,4 +1,4 @@
-# Bioinformatics Project
+# CAP-5510: Bioinformatics Term Project
 
 ## Project Title
 
