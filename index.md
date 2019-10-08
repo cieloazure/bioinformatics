@@ -1,5 +1,3 @@
-# CAP-5510 Term Project
-
 ## Project Title
 
 Implementation and Analysis of different Algorithms to find Tandem Repeats in
