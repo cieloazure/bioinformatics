@@ -1,7 +1,8 @@
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.Random;
-public class SequenceGenerator {
+
+public class SequenceGenerator{
     private int aCount;
     private int cCount;
     private int gCount;
@@ -158,10 +159,10 @@ public class SequenceGenerator {
         try {
             PrintWriter out = new PrintWriter(this.outputFileName);
             out.write(sequence);
+            out.close();
         }
         catch (FileNotFoundException e){
             System.out.println("Couldn't write to file");
-
         }
 
 
