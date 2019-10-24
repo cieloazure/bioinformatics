@@ -1,4 +1,9 @@
-#include <bits/stdc++.h>
+#include <iostream>
+#include <random>
+#include <string>
+#include <algorithm>
+#include <fstream>
+
 
 namespace Simulation {
   std::mt19937 seeded_eng() {

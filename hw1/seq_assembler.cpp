@@ -1,4 +1,8 @@
-#include <bits/stdc++.h>
+#include <string>
+#include <vector>
+#include <algorithm>
+#include <fstream>
+#include <list>
 
 namespace Assembler {
   class SequenceAssembler {
@@ -218,7 +222,14 @@ namespace Assembler {
           max_str = fragment2 + fragment1.substr(match_idx, fragment1.length() - match_idx);
         } else {
           max_score = jt;
-          max_str = fragment1.length() > fragment2.length() ? fragment1 : fragment2;
+          int it_idx = std::distance(cost.back().begin(), it);
+          if(jt_idx != it_idx) {
+            std::string max_str_1 = fragment1 + fragment2.substr(match_idx, fragment2.length() - match_idx);
+            std::string max_str_2 = fragment2 + fragment1.substr(match_idx, fragment1.length() - match_idx);
+            max_str = max_str_1.length() > max_str_2.length() ? max_str_1 : max_str_2;
+          } else {
+            max_str = fragment1.length() > fragment2.length() ? fragment1 : fragment2;
+          }
         }
 
         //std::cout << std::endl;
