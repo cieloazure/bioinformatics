@@ -78,7 +78,7 @@ public class SequenceGenerator{
 
         // Convert first sequence to FASTA format and prepend to other sequences
         seq1 = sg.convertToFastaFormat(seq1, 0);
-        String fullSeq = seq1 + seqBuilder.toString();
+        String fullSeq = seq1 +"\n"+ seqBuilder.toString();
 
         // Write the full sequence to the outputfile
         sg.writeSeqToOutputFile(fullSeq);
