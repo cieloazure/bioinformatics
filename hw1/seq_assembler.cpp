@@ -146,6 +146,10 @@ namespace Assembler {
           fragment_list.erase(max_it);
           fragment_list.erase(max_jt);
           fragment_list.push_front(max_result->fragment);
+          // If largest alignment score is negative then break the loop
+          if(max_result->score < 0) {
+            break;
+          }
         }
 
         // output combined seq to file
@@ -224,8 +228,10 @@ namespace Assembler {
           max_score = jt;
           int it_idx = std::distance(cost.back().begin(), it);
           if(jt_idx != it_idx) {
-            std::string max_str_1 = fragment1 + fragment2.substr(match_idx, fragment2.length() - match_idx);
-            std::string max_str_2 = fragment2 + fragment1.substr(match_idx, fragment1.length() - match_idx);
+            int match_idx_1 = it_idx;
+            int match_idx_2 = jt_idx;
+            std::string max_str_1 = fragment1 + fragment2.substr(match_idx_1, fragment2.length() - match_idx_1);
+            std::string max_str_2 = fragment2 + fragment1.substr(match_idx_2, fragment1.length() - match_idx_2);
             max_str = max_str_1.length() > max_str_2.length() ? max_str_1 : max_str_2;
           } else {
             max_str = fragment1.length() > fragment2.length() ? fragment1 : fragment2;
