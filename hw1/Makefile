@@ -18,5 +18,6 @@ all:  hw1-1 hw1-2 hw1-3
 
 clean: 
 	rm -rf hw1-2
+	rm -rf h*
 	rm -rf *.fasta
 	rm -rf *.class

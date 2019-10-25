@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <fstream>
 #include <list>
+#include <iostream>
 
 namespace Assembler {
   class SequenceAssembler {
@@ -55,7 +56,7 @@ namespace Assembler {
         std::string line;
 
         std::string token = "seq";
-        int seq_num = -1;
+        int seq_num = 0;
         std::string curr_frag;
         while(std::getline(inFile, line)) {
           if(starts_with(line, ">")) {
@@ -65,30 +66,6 @@ namespace Assembler {
               // reset curr_frag
               curr_frag = "";
             }
-
-            // Get to first digit
-            int i = 0;
-            for(;!std::isdigit(line[i]); i++);
-
-            // Collect sequence number
-            std::string curr;
-            for(;line[i] != '|'; i++) {
-              curr += line[i];
-            }
-            // Convert seq number to int
-            int curr_seq_num = std::stoi(curr);
-
-            // New seq number encountered
-            // Output combined fragments of previous sequence
-            if(seq_num != curr_seq_num && seq_num >= 0) {
-              // greedy_combine
-              greedy_combine(fragments, match_score, replace_penalty, del_ins_penalty, seq_num, outFile);
-
-              // empty fragments
-              fragments.clear();
-            }
-            // set new seq number
-            seq_num = curr_seq_num;
           } else {
             curr_frag += line;
           }
@@ -101,6 +78,7 @@ namespace Assembler {
           // reset curr_frag
           curr_frag = "";
         }
+
         // greedy_combine
         greedy_combine(fragments, match_score, replace_penalty, del_ins_penalty, seq_num, outFile);
       }
@@ -112,6 +90,7 @@ namespace Assembler {
         }
 
         while(fragment_list.size() > 1) {
+          std::cout << fragment_list.size() << std::endl;
           alignment_result* max_result = nullptr;
           std::list<std::string>::iterator max_it;
           std::list<std::string>::iterator max_jt;
@@ -146,6 +125,10 @@ namespace Assembler {
           fragment_list.erase(max_it);
           fragment_list.erase(max_jt);
           fragment_list.push_front(max_result->fragment);
+          // If largest alignment score is negative then break the loop
+          if(max_result->score < 0) {
+            break;
+          }
         }
 
         // output combined seq to file
@@ -212,6 +195,7 @@ namespace Assembler {
         int max_score = -1;
         int match_idx = -1;
         std::string max_str;
+        //std::cout << "(it, jt)" << "(" << *it << "," << jt << ")" << std::endl;
         if(*it > jt) {
           max_score = *it;
           match_idx = std::distance(cost.back().begin(), it);
@@ -223,12 +207,17 @@ namespace Assembler {
         } else {
           max_score = jt;
           int it_idx = std::distance(cost.back().begin(), it);
-          if(jt_idx != it_idx) {
-            std::string max_str_1 = fragment1 + fragment2.substr(match_idx, fragment2.length() - match_idx);
-            std::string max_str_2 = fragment2 + fragment1.substr(match_idx, fragment1.length() - match_idx);
-            max_str = max_str_1.length() > max_str_2.length() ? max_str_1 : max_str_2;
-          } else {
+          //std::cout << "(it_idx, jt_idx)" << "(" << it_idx << "," << jt_idx << ")" << std::endl;
+          if(jt_idx == ncols-1 || it_idx == nrows-1) {
+            //std::cout << "Special condition 1" << std::endl;
             max_str = fragment1.length() > fragment2.length() ? fragment1 : fragment2;
+          } else {
+            //std::cout << "Special condition 2" << std::endl;
+            int match_idx_1 = it_idx;
+            int match_idx_2 = jt_idx;
+            std::string max_str_1 = fragment1 + fragment2.substr(match_idx_1, fragment2.length() - match_idx_1);
+            std::string max_str_2 = fragment2 + fragment1.substr(match_idx_2, fragment1.length() - match_idx_2);
+            max_str = max_str_1.length() > max_str_2.length() ? max_str_1 : max_str_2;
           }
         }
 
