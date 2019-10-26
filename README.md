@@ -34,8 +34,9 @@ Tushars-MacBook-Air:hw1 tusharkale$ `java -jar hw1-1.jar 500 25 25 25 25 10 0.00
 Tushars-MacBook-Air:hw1 tusharkale$ `./hw1-2 outputfile 200 250 out2`  
 Tushars-MacBook-Air:hw1 tusharkale$  
 Tushars-MacBook-Air:hw1 tusharkale$ `./hw1-3 out2 1 -1 -3 out3`  
-`20 fragments left to go  
-19 fragments left to go  
+
+20 fragments left to go    
+19 fragments left to go    
 18 fragments left to go  
 17 fragments left to go  
 16 fragments left to go  
@@ -52,4 +53,4 @@ Tushars-MacBook-Air:hw1 tusharkale$ `./hw1-3 out2 1 -1 -3 out3`
 5 fragments left to go  
 4 fragments left to go  
 3 fragments left to go  
-2 fragments left to go`  
+2 fragments left to go  
