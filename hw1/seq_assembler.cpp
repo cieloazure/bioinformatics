@@ -90,7 +90,7 @@ namespace Assembler {
         }
 
         while(fragment_list.size() > 1) {
-          std::cout << fragment_list.size() << std::endl;
+          std::cout << fragment_list.size() << " fragments left to go"<< std::endl;
           alignment_result* max_result = nullptr;
           std::list<std::string>::iterator max_it;
           std::list<std::string>::iterator max_jt;
