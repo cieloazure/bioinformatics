@@ -6,6 +6,7 @@ public class DPTandemRepeat {
     char [] sequence;
     char pointers [][];
     int matrix [][];
+    long executionTime;
     HashMap <String, ArrayList<String>> repeats;
 
     private DPTandemRepeat(String sequence){
@@ -13,6 +14,7 @@ public class DPTandemRepeat {
         this.pointers = new char [this.sequence.length][this.sequence.length];
         this.matrix = new int [this.sequence.length][this.sequence.length];
         this.repeats = new <String, ArrayList<String>>HashMap();
+        this.executionTime = 0;
     }
 
     private void setSequence(String sequence) {
@@ -136,22 +138,22 @@ public class DPTandemRepeat {
 
         }
 
-//        System.out.println(seq_1+": Starting at "+(i+1)+ " ending at "+i_str);
-//        System.out.println(seq_2+": Starting at "+(j+1)+ " ending at "+j_str);
-//        System.out.println("**************");
+        System.out.println(seq_1+": Starting at "+(i+1)+ " ending at "+i_str);
+        System.out.println(seq_2+": Starting at "+(j+1)+ " ending at "+j_str);
+        System.out.println("**************");
     }
     public static void main(String[] args){
         String seq = "ATTCGATTCGATTCG";
-
+        long startTime = System.currentTimeMillis();
         DPTandemRepeat dptr = new DPTandemRepeat(seq);
         dptr.buildMatrix();
 
-        for(int i = 0; i < dptr.sequence.length; i++) {
-            for (int j = 0; j < dptr.sequence.length; j++) {
-                System.out.print(dptr.pointers[i][j]+"\t");
-            }
-            System.out.println();
-        }
+//        for(int i = 0; i < dptr.sequence.length; i++) {
+//            for (int j = 0; j < dptr.sequence.length; j++) {
+//                System.out.print(dptr.pointers[i][j]+"\t");
+//            }
+//            System.out.println();
+//        }
         for(int i = 0; i < dptr.sequence.length; i++) {
             for (int j = i; j < dptr.sequence.length; j++) {
                 if(dptr.matrix[i][j]>0 && dptr.sequence[i]==dptr.sequence[j]){
@@ -162,7 +164,10 @@ public class DPTandemRepeat {
             }
 
         }
+        long endTime = System.currentTimeMillis();
+        long timeElapsed = endTime - startTime;
+        dptr.executionTime = timeElapsed;
+        System.out.println("Execution time "+ dptr.executionTime+" milliseconds" );
     }
-
 
 }
