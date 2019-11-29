@@ -149,13 +149,13 @@ public class SuffixTreeProblem {
         }
 
         private void tandemRepeatsRec(int n, List<TandemRepeatOutput> acc) {
-            Node node = nodes.get(n);
-            List<Integer> children = node.ch;
+            Node v = nodes.get(n);
+            List<Integer> children = v.ch;
             if (children.isEmpty()) {
                 return;
             }
 
-            if(node.mark) {
+            if(v.mark) {
                 return;
             }
 
@@ -163,27 +163,69 @@ public class SuffixTreeProblem {
                 // Basic Algorithm
                 // 1.Select an unmarked internal node v. Mark v and execute steps 2a and 2b for
                 //node v.
-                node.mark = true;
+                v.mark = true;
 
-                // 2a. Collect the leaf-list, LL(v), of v.
-                List<Integer> leafList = new ArrayList<>();
-                for(int i = node.dfs.get(0); i <= node.dfs.get(1); i++) {
-                    leafList.add(dfsToIdx.get(i));
+                // 2a. Collect the leaf-list, LL'(v), of v.
+                // where LL'(v) = LL(v) - LL(v')
+                // where v' = child with largest leaf list
+
+                // find v', child with largest leaf list 
+                Node max = null;
+                int maxSize = -1;
+                for(int i = 0; i < children.size(); i++) {
+                    Node c = nodes.get(children.get(i));
+                    int currSize = c.dfs.get(1) - c.dfs.get(0) + 1;
+                    if(currSize > maxSize) {
+                      max = c;
+                      maxSize = currSize;
+                    }
                 }
+
+                // find LL'(v)
+                List<Integer> leafListRedux = new ArrayList<>();
+                for(int i = v.dfs.get(0); i <= v.dfs.get(1); i++) {
+                  if(i < max.dfs.get(0) || i > max.dfs.get(1)) {
+                    leafListRedux.add(dfsToIdx.get(i));
+                  }
+                }
+
 
                 // 2b.For each leaf-label i in LL(v), test whether leaf-label j = i + D(v) is in LL(v). If
                 //so, test whether S[i] != S[i + 2D(v)]
-                for(int i: leafList) {
-                    int j = i + node.d;
+                for(int i: leafListRedux) {
+                    int j = i + v.d;
                     Integer dfsId = idxToDfs.get(j);
                     if(dfsId != null) {
-                        if(dfsId >= node.dfs.get(0) && dfsId <= node.dfs.get(1)) {
-                            int next_i = i + (2 * node.d);
+                        // check whether leaf-label j is in LL(v)
+                        if(dfsId >= v.dfs.get(0) && dfsId <= v.dfs.get(1)) {
+                            int next_i = i + (2 * v.d);
                             if(next_i < source.length() && source.charAt(i) != source.charAt(next_i)) {
                                 // branching tandem repeat found
                                 TandemRepeatOutput o = new TandemRepeatOutput();
-                                o.idx = i + 1;
-                                o.length = node.d;
+                                o.idx = i;
+                                o.length = v.d;
+                                o.repeats = 2;
+                                acc.add(o);
+                            }
+                        }
+                    }
+                }
+
+                //For each leaf-label j in LL(v), test whether leaf-label i = j − D(v) is in LL(v). If
+                //so, test whether S[i] != S[i + 2D(v)]. There is a branching tandem repeat of length
+                //2D(v) starting at that position i if and only if both tests return true
+                for(int j: leafListRedux) {
+                    int i = j - v.d;
+                    Integer dfsId = idxToDfs.get(i);
+                    if(dfsId != null) {
+                        // check whether leaf-label j is in LL(v)
+                        if(dfsId >= v.dfs.get(0) && dfsId <= v.dfs.get(1)) {
+                            int next_i = i + (2 * v.d);
+                            if(next_i < source.length() && source.charAt(i) != source.charAt(next_i)) {
+                                // branching tandem repeat found
+                                TandemRepeatOutput o = new TandemRepeatOutput();
+                                o.idx = i;
+                                o.length = v.d;
                                 o.repeats = 2;
                                 acc.add(o);
                             }
@@ -203,8 +245,17 @@ public class SuffixTreeProblem {
     }
 
     public static void main(String[] args) {
-        SuffixTree s = new SuffixTree("MISSISSIPPI$");
+        String source = "MISSISSIPPI$";
+        SuffixTree s = new SuffixTree(source);
         s.visualize();
+        for(int i = 0; i < source.length(); i++) {
+          System.out.printf(i + " ");
+        }
+        System.out.println();
+        for(int i = 0; i < source.length(); i++) {
+          System.out.printf(source.charAt(i) + " ");
+        }
+        System.out.println();
         List<TandemRepeatOutput> l = s.tandemRepeats();
         for(TandemRepeatOutput o: l) {
             System.out.println("("+o.idx + "," + o.length + "," + o.repeats +")");
