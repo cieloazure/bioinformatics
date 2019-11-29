@@ -11,10 +11,10 @@ public class SuffixTreeProblem {
         int idx = -1;
         boolean visited = false;
         List<Integer> dfs = new ArrayList<>();
-        int d = -1;
+        int depth = -1;
     }
 
-    private static class TandemRepeatOutput {
+    private static class TROutput {
         int idx = -1;
         int length = -1;
         int repeats = -1;
@@ -29,11 +29,17 @@ public class SuffixTreeProblem {
         private String source = "";
 
         public SuffixTree(String str) {
+            //  Create suffix tree
             source = str;
             nodes.add(new Node());
             for (int i = 0; i < str.length(); ++i) {
                 addSuffix(str.substring(i), i);
             }
+
+            // Traverse the tree in dfs -> assign dfs numbers and calculate
+            // depth of each node
+            next = 0;
+            recent = 0;
             dfs();
         }
 
@@ -117,9 +123,9 @@ public class SuffixTreeProblem {
             }
         }
 
-        private void dfsVisit(Node u, int d) {
+        private void dfsVisit(Node u, int pred_depth) {
             u.dfs.add(next);
-            u.d = d + u.sub.length();
+            u.depth = pred_depth + u.sub.length();
             if(u.ch.size() == 0)  {
                 // leaf
                 recent = next;
@@ -130,7 +136,7 @@ public class SuffixTreeProblem {
 
             for(int i = 0; i < u.ch.size(); i++) {
                 if(!nodes.get(u.ch.get(i)).visited) {
-                    dfsVisit(nodes.get(u.ch.get(i)), d + u.sub.length());
+                    dfsVisit(nodes.get(u.ch.get(i)), pred_depth + u.sub.length());
                 }
             }
 
@@ -138,23 +144,28 @@ public class SuffixTreeProblem {
             u.dfs.add(recent);
         }
 
-        public List<TandemRepeatOutput> branchingTandemRepeats() {
-            List<TandemRepeatOutput> branchTandemRepeats = new ArrayList<>();
+        public List<TROutput> branchingTRs() {
+            List<TROutput> branchTRs = new ArrayList<>();
             if (nodes.isEmpty()) {
                 System.out.println("<empty>");
-                return branchTandemRepeats;
+                return branchTRs;
             }
-            branchingTandemRepeatsRec(0, branchTandemRepeats);
-            return branchTandemRepeats;
+            branchingTRsRec(0, branchTRs);
+            return branchTRs;
         }
 
-        private List<TandemRepeatOutput> rotations(List<TandemRepeatOutput> branchingTRs) {
-          List<TandemRepeatOutput> nonBranchingTRs = new ArrayList<>();
-          for(TandemRepeatOutput tr: branchingTRs) {
+        private List<TROutput> nonBranchingTRs(List<TROutput> branchingTRs) {
+          // Rotations Procedure:
+          // Starting with an occurrence (i; wa; 2) of a branching tandem repeat, test if S[i−1] = a.
+          // If they are equal, (i − 1; aw; 2) is reported as a non-branching tandem repeat. This
+          // process, called the rotation procedure, is continued to the left until an inequality is
+          // observed, at which point the procedure stops.
+          List<TROutput> nonBranchingTRs = new ArrayList<>();
+          for(TROutput tr: branchingTRs) {
             int start1 = tr.idx - 1;
             int start2 = start1 + tr.length + 1;
             while(start1 >= 0 && source.charAt(start1) == source.charAt(start2)) {
-              TandemRepeatOutput new_tr = new TandemRepeatOutput();
+              TROutput new_tr = new TROutput();
               new_tr.idx = start1;
               new_tr.length = tr.length;
               new_tr.repeats = 2;
@@ -168,13 +179,16 @@ public class SuffixTreeProblem {
           return nonBranchingTRs;
         }
 
-        private void branchingTandemRepeatsRec(int n, List<TandemRepeatOutput> acc) {
+        private void branchingTRsRec(int n, List<TROutput> acc) {
             Node v = nodes.get(n);
             List<Integer> children = v.ch;
+
+            // Checking only internal nodes
             if (children.isEmpty()) {
                 return;
             }
 
+            // If vertex is already marked don't proceed
             if(v.mark) {
                 return;
             }
@@ -213,17 +227,17 @@ public class SuffixTreeProblem {
                 // 2b.For each leaf-label i in LL(v), test whether leaf-label j = i + D(v) is in LL(v). If
                 //so, test whether S[i] != S[i + 2D(v)]
                 for(int i: leafListRedux) {
-                    int j = i + v.d;
+                    int j = i + v.depth;
                     Integer dfsId = idxToDfs.get(j);
                     if(dfsId != null) {
                         // check whether leaf-label j is in LL(v)
                         if(dfsId >= v.dfs.get(0) && dfsId <= v.dfs.get(1)) {
-                            int next_i = i + (2 * v.d);
+                            int next_i = i + (2 * v.depth);
                             if(next_i < source.length() && source.charAt(i) != source.charAt(next_i)) {
                                 // branching tandem repeat found
-                                TandemRepeatOutput o = new TandemRepeatOutput();
+                                TROutput o = new TROutput();
                                 o.idx = i;
-                                o.length = v.d;
+                                o.length = v.depth;
                                 o.repeats = 2;
                                 acc.add(o);
                             }
@@ -235,17 +249,17 @@ public class SuffixTreeProblem {
                 //so, test whether S[i] != S[i + 2D(v)]. There is a branching tandem repeat of length
                 //2D(v) starting at that position i if and only if both tests return true
                 for(int j: leafListRedux) {
-                    int i = j - v.d;
+                    int i = j - v.depth;
                     Integer dfsId = idxToDfs.get(i);
                     if(dfsId != null) {
                         // check whether leaf-label j is in LL(v)
                         if(dfsId >= v.dfs.get(0) && dfsId <= v.dfs.get(1)) {
-                            int next_i = i + (2 * v.d);
+                            int next_i = i + (2 * v.depth);
                             if(next_i < source.length() && source.charAt(i) != source.charAt(next_i)) {
                                 // branching tandem repeat found
-                                TandemRepeatOutput o = new TandemRepeatOutput();
+                                TROutput o = new TROutput();
                                 o.idx = i;
-                                o.length = v.d;
+                                o.length = v.depth;
                                 o.repeats = 2;
                                 acc.add(o);
                             }
@@ -257,15 +271,17 @@ public class SuffixTreeProblem {
 
             for (int i = 0; i < children.size(); i++) {
                 Integer c = children.get(i);
-                branchingTandemRepeatsRec(c, acc);
+                branchingTRsRec(c, acc);
             }
         }
     }
 
     public static void main(String[] args) {
-        String source = "cbaxjjjjcbaxjjjjcbay$";
+        String source = "ACACACAC$";
         SuffixTree s = new SuffixTree(source);
         s.visualize();
+
+        // Print string with indexes
         for(int i = 0; i < source.length(); i++) {
           System.out.printf("%3d", i);
         }
@@ -274,18 +290,20 @@ public class SuffixTreeProblem {
           System.out.printf("%3c", source.charAt(i));
         }
         System.out.println();
-        List<TandemRepeatOutput> l = s.branchingTandemRepeats();
+
+        // Print Branching TRs
+        List<TROutput> l = s.branchingTRs();
         System.out.println("- Branching");
-        for(TandemRepeatOutput o: l) {
+        for(TROutput o: l) {
             System.out.println("("+o.idx + "," + o.length + "," + o.repeats +")");
         }
 
+        // Print Non-Branching TRs
         System.out.println("- Non-Branching");
-        List<TandemRepeatOutput> l2 = s.rotations(l);
-        for(TandemRepeatOutput o: l2) {
+        List<TROutput> l2 = s.nonBranchingTRs(l);
+        for(TROutput o: l2) {
             System.out.println("("+o.idx + "," + o.length + "," + o.repeats +")");
         }
-
     }
 }
 
