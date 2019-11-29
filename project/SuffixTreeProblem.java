@@ -138,17 +138,37 @@ public class SuffixTreeProblem {
             u.dfs.add(recent);
         }
 
-        public List<TandemRepeatOutput> tandemRepeats() {
+        public List<TandemRepeatOutput> branchingTandemRepeats() {
             List<TandemRepeatOutput> branchTandemRepeats = new ArrayList<>();
             if (nodes.isEmpty()) {
                 System.out.println("<empty>");
                 return branchTandemRepeats;
             }
-            tandemRepeatsRec(0, branchTandemRepeats);
+            branchingTandemRepeatsRec(0, branchTandemRepeats);
             return branchTandemRepeats;
         }
 
-        private void tandemRepeatsRec(int n, List<TandemRepeatOutput> acc) {
+        private List<TandemRepeatOutput> rotations(List<TandemRepeatOutput> branchingTRs) {
+          List<TandemRepeatOutput> nonBranchingTRs = new ArrayList<>();
+          for(TandemRepeatOutput tr: branchingTRs) {
+            int start1 = tr.idx - 1;
+            int start2 = start1 + tr.length + 1;
+            while(start1 >= 0 && source.charAt(start1) == source.charAt(start2)) {
+              TandemRepeatOutput new_tr = new TandemRepeatOutput();
+              new_tr.idx = start1;
+              new_tr.length = tr.length;
+              new_tr.repeats = 2;
+              nonBranchingTRs.add(new_tr);
+
+              start1--;
+              start2--;
+            }
+          }
+
+          return nonBranchingTRs;
+        }
+
+        private void branchingTandemRepeatsRec(int n, List<TandemRepeatOutput> acc) {
             Node v = nodes.get(n);
             List<Integer> children = v.ch;
             if (children.isEmpty()) {
@@ -160,8 +180,8 @@ public class SuffixTreeProblem {
             }
 
             if(n > 0) {
-                // Basic Algorithm
-                // 1.Select an unmarked internal node v. Mark v and execute steps 2a and 2b for
+                // Optimized Algorithm
+                // 1.Select an unmarked internal node(except root) v. Mark v and execute steps 2a and 2b for
                 //node v.
                 v.mark = true;
 
@@ -235,31 +255,37 @@ public class SuffixTreeProblem {
             }
 
 
-
-
             for (int i = 0; i < children.size(); i++) {
                 Integer c = children.get(i);
-                tandemRepeatsRec(c, acc);
+                branchingTandemRepeatsRec(c, acc);
             }
         }
     }
 
     public static void main(String[] args) {
-        String source = "MISSISSIPPI$";
+        String source = "cbaxjjjjcbaxjjjjcbay$";
         SuffixTree s = new SuffixTree(source);
         s.visualize();
         for(int i = 0; i < source.length(); i++) {
-          System.out.printf(i + " ");
+          System.out.printf("%3d", i);
         }
         System.out.println();
         for(int i = 0; i < source.length(); i++) {
-          System.out.printf(source.charAt(i) + " ");
+          System.out.printf("%3c", source.charAt(i));
         }
         System.out.println();
-        List<TandemRepeatOutput> l = s.tandemRepeats();
+        List<TandemRepeatOutput> l = s.branchingTandemRepeats();
+        System.out.println("- Branching");
         for(TandemRepeatOutput o: l) {
             System.out.println("("+o.idx + "," + o.length + "," + o.repeats +")");
         }
+
+        System.out.println("- Non-Branching");
+        List<TandemRepeatOutput> l2 = s.rotations(l);
+        for(TandemRepeatOutput o: l2) {
+            System.out.println("("+o.idx + "," + o.length + "," + o.repeats +")");
+        }
+
     }
 }
 
