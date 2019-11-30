@@ -13,7 +13,7 @@ public class DPTandemRepeat {
         this.setSequence(sequence);
         this.pointers = new char [this.sequence.length][this.sequence.length];
         this.matrix = new int [this.sequence.length][this.sequence.length];
-        this.repeats = new <String, ArrayList<String>>HashMap();
+        this.repeats = new HashMap<String, ArrayList<String>>();
         this.executionTime = 0;
     }
 
@@ -142,6 +142,7 @@ public class DPTandemRepeat {
         System.out.println(seq_2+": Starting at "+(j+1)+ " ending at "+j_str);
         System.out.println("**************");
     }
+
     public static void main(String[] args){
         String seq = "ATTCGATTCGATTCG";
         long startTime = System.currentTimeMillis();
