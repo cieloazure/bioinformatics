@@ -1,13 +1,16 @@
 public class Main {
     public static void main(String[] args) {
-        String source = TRStringBuilder.build(3, 2, 20);
+        int totalLength  = 60;
+        String source = TRStringBuilder.build(3, 4, totalLength);
 
-        for (int i = 0; i < source.length(); i++) {
-            System.out.printf("%3d", i);
-        }
-        System.out.println();
-        for (int i = 0; i < source.length(); i++) {
-            System.out.printf("%3c", source.charAt(i));
+        if(totalLength  <= 60) {
+            for (int i = 0; i < source.length(); i++) {
+                System.out.printf("%3d", i);
+            }
+            System.out.println();
+            for (int i = 0; i < source.length(); i++) {
+                System.out.printf("%3c", source.charAt(i));
+            }
         }
 
         System.out.println();
@@ -20,5 +23,8 @@ public class Main {
         System.out.println("** TRs DYNAMIC PROGRAMMING **");
         Result r2 = DPTandemRepeatDemo.run(source);
         r2.printResults();
+
+        System.out.printf("\n\n");
+        System.out.println("SUFFIX_TREE == DP? " + (r1.equals(r2) ? "YES" : "NO"));
     }
 }

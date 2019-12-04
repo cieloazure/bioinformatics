@@ -19,7 +19,7 @@ public class TRStringBuilder {
 
         // Inject known tandem repeat
         String knownTR = sequenceGenerator(rLength, rInstances);
-        int trIdx = r.nextInt(totalLength);
+        int trIdx = r.nextInt(totalLength - totalTRLen);
         s.replace(trIdx, trIdx + totalTRLen, knownTR);
 
         return s.toString();
