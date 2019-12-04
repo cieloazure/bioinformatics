@@ -4,20 +4,18 @@ import java.util.List;
 import java.util.Map;
 
 public class SuffixTreeDemo {
-    public static void run(String source) {
+    public static Result run(String source) {
         if (!source.endsWith("$")) {
             source += '$';
         }
         long startTime = System.currentTimeMillis();
         SuffixTree s = new SuffixTree(source);
-//        s.visualize();
-
-        // Get Branching TRs
-        List<TROutput> l1 = s.branchingTRs();
-
+        //s.visualize();
 
         Result r = new Result(source);
 
+        // Get Branching TRs
+        List<TROutput> l1 = s.branchingTRs();
         for (TROutput triplet : l1) {
             r.addResult(triplet);
         }
@@ -28,11 +26,10 @@ public class SuffixTreeDemo {
             r.addResult(triplet);
         }
 
-        r.printResults();
 
         long endTime = System.currentTimeMillis();
-        long timeElapsed = endTime - startTime;
-        System.out.println("Execution time:" + timeElapsed + " ms");
+        r.setExecutionTime(endTime - startTime);
+        return r;
     }
 
     private static class Node {
@@ -186,9 +183,9 @@ public class SuffixTreeDemo {
             // observed, at which point the procedure stops.
             List<TROutput> nonBranchingTRs = new ArrayList<>();
             for (TROutput tr : branchingTRs) {
-                if(tr.length > 2) {
+                if (tr.length > 2) {
                     int start1 = tr.idx - 1;
-                    int start2 = start1 + tr.length + 1;
+                    int start2 = start1 + (tr.length/2);
                     while (start1 >= 0 && source.charAt(start1) == source.charAt(start2)) {
                         TROutput new_tr = new TROutput();
                         new_tr.idx = start1;

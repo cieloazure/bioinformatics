@@ -1,6 +1,7 @@
 public class Main {
     public static void main(String[] args) {
-        String source = TRStringBuilder.build(3, 2, 20);
+//        String source = TRStringBuilder.build(3, 2, 20);
+        String source = "FBEUYCDKHETRETRHUMMD";
         for (int i = 0; i < source.length(); i++) {
             System.out.printf("%3d", i);
         }
@@ -12,10 +13,12 @@ public class Main {
         System.out.println();
         System.out.println();
         System.out.println("** TRs SUFFIX TREE **");
-        SuffixTreeDemo.run(source);
+        Result r1 = SuffixTreeDemo.run(source);
+        r1.printResults();
 
         System.out.println();
         System.out.println("** TRs DYNAMIC PROGRAMMING **");
-        DPTandemRepeatDemo.run(source);
+        Result r2 = DPTandemRepeatDemo.run(source);
+        r2.printResults();
     }
 }

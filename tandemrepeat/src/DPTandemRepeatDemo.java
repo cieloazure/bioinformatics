@@ -6,7 +6,7 @@ import java.util.List;
 
 public class DPTandemRepeatDemo {
 
-    public static void run(String seq) {
+    public static Result run(String seq) {
         long startTime = System.currentTimeMillis();
         Result r = new Result(seq);
         DPTandemRepeat dptr = new DPTandemRepeat(seq);
@@ -60,11 +60,10 @@ public class DPTandemRepeatDemo {
             r.addResult(tr);
         }
 
-        r.printResults();
         long endTime = System.currentTimeMillis();
-        long timeElapsed = endTime - startTime;
-        dptr.executionTime = timeElapsed;
-        System.out.println("Execution time " + dptr.executionTime + " milliseconds");
+        dptr.executionTime = endTime - startTime;
+        r.setExecutionTime(endTime - startTime);
+        return r;
     }
 
     private static class DPTandemRepeat {

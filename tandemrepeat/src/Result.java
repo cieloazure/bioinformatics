@@ -5,10 +5,14 @@ import java.util.Map;
 public class Result {
 
     private Map<String, ArrayList<TROutput>> results = new HashMap<String, ArrayList<TROutput>>();
+    private long executionTime = 0;
     private String source = "";
-
     public Result(String s) {
         source = s;
+    }
+
+    public void setExecutionTime(long executionTime) {
+        this.executionTime = executionTime;
     }
 
     public void addResult(TROutput triplet) {
@@ -37,5 +41,7 @@ public class Result {
             opt.append("]");
             System.out.println(e.getKey() + " =>  " + opt);
         }
+
+        System.out.println("Execution time: " + this.executionTime + " ms");
     }
 }
