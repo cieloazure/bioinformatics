@@ -1,7 +1,8 @@
 public class Main {
     public static void main(String[] args) {
-        int totalLength  = 60;
-        String source = TRStringBuilder.build(3, 4, totalLength);
+        int totalLength  = 20;
+        TRStringBuilder trsb = new TRStringBuilder();
+        String source = trsb.build(3, 2, totalLength);
         if(source.isEmpty()) return;
 
         if(totalLength  <= 60) {

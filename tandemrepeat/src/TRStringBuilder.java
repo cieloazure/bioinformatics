@@ -3,7 +3,11 @@ import java.util.Random;
 public class TRStringBuilder {
     private static final String characterSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    public static String build(int rLength, int rInstances, int totalLength) { //, float errorRate) {
+    private String source = "";
+    private int repeatStartIdx = -1;
+    private int repeatLength = -1;
+
+    public String build(int rLength, int rInstances, int totalLength) { //, float errorRate) {
         Random r = new Random();
         int totalTRLen = rLength * rInstances;
         if (totalTRLen >= totalLength) {
@@ -22,6 +26,9 @@ public class TRStringBuilder {
         int trIdx = r.nextInt(totalLength - totalTRLen);
         s.replace(trIdx, trIdx + totalTRLen, knownTR);
 
+        this.source = s.toString();
+        this.repeatStartIdx = trIdx;
+        this.repeatLength = rLength;
         return s.toString();
     }
 
@@ -31,7 +38,7 @@ public class TRStringBuilder {
 //    public static String build(List<Integer> rLengths,List<Integer> rInstances, int totalLength) {
 //    }
 
-    private static String sequenceGenerator(int rLength, int rInstances) {
+    private String sequenceGenerator(int rLength, int rInstances) {
         Random r = new Random();
         StringBuilder s = new StringBuilder();
         while (s.length() < rLength) {

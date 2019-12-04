@@ -6,6 +6,8 @@ public class Experimentation {
     static int rInstancesLL = 2;
     static int rInstancesUL = 10;
 
+    private static TRStringBuilder trsb = new TRStringBuilder();
+
     public static void main(String[] args) {
         Experimentation.varyingTotalSequenceLength();
         Experimentation.varyingSeqLength();
@@ -16,7 +18,7 @@ public class Experimentation {
         System.out.println(" ********  VARYING TOTAL SEQUENCE LENGTH  ******** ");
         printSeparator('-', 100);
         for(int seqLen = seqLenLL; seqLen <= seqLenUL; seqLen += 10) {
-            String source = TRStringBuilder.build(rLenLL, rInstancesLL, seqLen);
+            String source = trsb.build(rLenLL, rInstancesLL, seqLen);
             Result r1 = SuffixTreeDemo.run(source);
             Result r2 = DPTandemRepeatDemo.run(source);
             printParams(rLenLL, rInstancesLL, seqLen);
@@ -31,7 +33,7 @@ public class Experimentation {
         System.out.println(" ********  VARYING SEQUENCE LENGTH  ******** ");
         printSeparator('-', 100);
         for(int seqLen = rLenLL; seqLen <= rLenUL; seqLen++) {
-            String source = TRStringBuilder.build(seqLen, rInstancesLL, seqLenUL);
+            String source = trsb.build(seqLen, rInstancesLL, seqLenUL);
             Result r1 = SuffixTreeDemo.run(source);
             Result r2 = DPTandemRepeatDemo.run(source);
             printParams(seqLen, rInstancesLL, seqLenUL);
@@ -47,7 +49,7 @@ public class Experimentation {
         System.out.println(" ********  VARYING SEQUENCE Instances ******** ");
         printSeparator('-', 100);
         for(int seqInst = rInstancesLL; seqInst <= rInstancesUL; seqInst++) {
-            String source = TRStringBuilder.build(rLenLL, seqInst, seqLenUL);
+            String source = trsb.build(rLenLL, seqInst, seqLenUL);
             Result r1 = SuffixTreeDemo.run(source);
             Result r2 = DPTandemRepeatDemo.run(source);
             printParams(rLenLL, seqInst, seqLenUL);
