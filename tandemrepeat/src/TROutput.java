@@ -11,4 +11,5 @@ class TROutput {
         this.length = length;
         this.repeats = repeats;
     }
+
 }

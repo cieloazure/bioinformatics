@@ -25,6 +25,12 @@ public class TRStringBuilder {
         return s.toString();
     }
 
+//    Place tandem repeats of rLength of rInstances in the string
+//    Finding non-overlapping areas of the string
+//    Deciding whether such an area exists
+//    public static String build(List<Integer> rLengths,List<Integer> rInstances, int totalLength) {
+//    }
+
     private static String sequenceGenerator(int rLength, int rInstances) {
         Random r = new Random();
         StringBuilder s = new StringBuilder();
@@ -41,4 +47,5 @@ public class TRStringBuilder {
 
         return trs.toString();
     }
+
 }
