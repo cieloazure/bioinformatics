@@ -6,7 +6,7 @@ public class TRStringBuilder {
     public static String build(int rLength, int rInstances, int totalLength) { //, float errorRate) {
         Random r = new Random();
         int totalTRLen = rLength * rInstances;
-        if (totalTRLen > totalLength) {
+        if (totalTRLen >= totalLength) {
             return "";
         }
 

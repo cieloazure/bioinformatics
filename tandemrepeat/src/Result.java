@@ -36,7 +36,7 @@ public class Result {
                 opt.append(" (").append(t.idx).append(",").append(t.length).append(",").append(t.repeats).append("),");
             }
             opt.deleteCharAt(opt.length() - 1);
-            opt.append("]");
+            opt.append("  ]");
             System.out.println(e.getKey() + " =>  " + opt);
         }
 
