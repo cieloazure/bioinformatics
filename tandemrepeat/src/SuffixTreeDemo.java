@@ -5,18 +5,16 @@ import java.util.Map;
 
 public class SuffixTreeDemo {
     public static void run(String source) {
-        long startTime = System.currentTimeMillis();
         if (!source.endsWith("$")) {
             source += '$';
         }
+        long startTime = System.currentTimeMillis();
         SuffixTree s = new SuffixTree(source);
 //        s.visualize();
 
         // Get Branching TRs
         List<TROutput> l1 = s.branchingTRs();
 
-        // Get Non-Branching TRs
-        List<TROutput> l2 = s.nonBranchingTRs(l1);
 
         Result r = new Result(source);
 
@@ -24,6 +22,8 @@ public class SuffixTreeDemo {
             r.addResult(triplet);
         }
 
+        // Get Non-Branching TRs
+        List<TROutput> l2 = s.nonBranchingTRs(l1);
         for (TROutput triplet : l2) {
             r.addResult(triplet);
         }
@@ -186,17 +186,19 @@ public class SuffixTreeDemo {
             // observed, at which point the procedure stops.
             List<TROutput> nonBranchingTRs = new ArrayList<>();
             for (TROutput tr : branchingTRs) {
-                int start1 = tr.idx - 1;
-                int start2 = start1 + tr.length + 1;
-                while (start1 >= 0 && source.charAt(start1) == source.charAt(start2)) {
-                    TROutput new_tr = new TROutput();
-                    new_tr.idx = start1;
-                    new_tr.length = tr.length;
-                    new_tr.repeats = 2;
-                    nonBranchingTRs.add(new_tr);
+                if(tr.length > 2) {
+                    int start1 = tr.idx - 1;
+                    int start2 = start1 + tr.length + 1;
+                    while (start1 >= 0 && source.charAt(start1) == source.charAt(start2)) {
+                        TROutput new_tr = new TROutput();
+                        new_tr.idx = start1;
+                        new_tr.length = tr.length;
+                        new_tr.repeats = 2;
+                        nonBranchingTRs.add(new_tr);
 
-                    start1--;
-                    start2--;
+                        start1--;
+                        start2--;
+                    }
                 }
             }
 
